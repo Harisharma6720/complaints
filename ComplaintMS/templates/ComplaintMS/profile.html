@@ -1,0 +1,26 @@
+{% extends "ComplaintMS/index1.html" %}
+
+{% load crispy_forms_tags %}
+
+<head>
+<style>
+.page-footer {
+    background-color: #00d1fb;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    /* Adjust top value to ensure footer placement */
+    top: calc(100vh - 100px); /* Example value; adjust as needed */
+}
+</style> 
+</head>
+
+{% block content %}
+<div class="container">
+    <div class="content-section">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+        <p class="text-secondary">{{ request.session.user.username }}</p>
+    </div>
+</div>
+{% endblock content %}

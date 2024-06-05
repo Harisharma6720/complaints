@@ -1,0 +1,69 @@
+{% extends "ComplaintMS/index.html" %}
+
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+
+
+
+<style>
+  body {
+    background: #ffffff; 
+  }
+
+  .jbg{
+    background: #ffffff;
+  }
+</style>
+
+<div  class="jumbotron text-center jbg">
+        <h1 style="color:rgb(110, 110, 110)">Nagar Gunaso</h1>
+        <p style="color:rgb(99, 99, 99)">Choose your Preferred Login Below</p> 
+      </div>
+
+          {% load static %}
+      <center>
+        
+
+
+
+
+
+          <div class="col-sm-3">
+           <div class="card mx-auto ">
+            <div class="col">
+                <br><!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
+                <img src="{% static 'ComplaintMS/img/public.png' %}" class="img-rounded" alt="Cinque Terre">
+                
+              
+              <p></p>
+              <a href="public/signinpublic.html/"><button type="button" class="btn" style="background-color: #34C759; color: #ffffff; border: none; border-radius: 5px; padding: 10px 20px;">Public</button></a>
+             </div>
+             </div>
+            </div>
+          </br>
+        <div class="row d-flex justify-content-center ">
+        <div class="col-sm-3">
+         <div class="card mx-auto ">
+          <div class="col">
+              <br><!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
+            <img src="{% static 'ComplaintMS/img/public.png' %}" class="img-rounded" alt="Cinque Terre">
+            
+            <p></p>
+            <a href="/signinpublic/"><button type="button" class="btn  btn-primary">Public Login</button></a>
+           </div>
+           </div>
+          </div>
+        <div class="col-sm-3">
+         <div class="card mx-auto">
+          <div class="col">
+
+                <br>
+          
+</center><!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
+      </body>
+
+  {% endblock content %}

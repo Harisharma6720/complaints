@@ -64,7 +64,7 @@ urlpatterns=[
 
 
     url(r'^login/$',views.login,name='login'),
-     url(r'^loginpublic/$',views.login,name='loginpublic'),
+     url(r'^loginpublic/$',views.loginpublic,name='loginpublic'),
     url(r'^list/$',views.list,name='list'),
     url(r'^pdf/$',views.pdf_view,name='view'),
     url(r'^pdf_g/$',views.pdf_viewer,name='view'),

@@ -31,13 +31,20 @@ from django.shortcuts import render
 def login_view(request):
     return render(request, 'signinpublic')
 
-
+def login_view(request):
+    return render(request, 'signinstaff')
 
 
 
 def signin_public(request):
     # view logic here
     return render(request, 'signinpublic.html')
+
+
+def signin_staff(request):
+    # view logic here
+    return render(request, 'signinstaff.html')
+
 
 """def add_complaint(request):
     #...
@@ -88,7 +95,16 @@ from datetime import datetime
 
 def login_redirect(request):
     # Your view function code here
-    pass
+    print("I have come here in the code.")
+    return redirect('dashboard')
+   
+def loginstaff_redirect(request):
+    # Your view function code here
+    print("I have come here in the code.")
+    # return redirect('dashboard')
+    return redirect('counter')
+    
+   
 
 
 
@@ -102,8 +118,14 @@ def aboutus(request):
 def signinpublic(request):
     return render(request,"ComplaintMS/signinpublic.html")
 
+def signinstaff(request):
+    return render(request,"ComplaintMS/signinstaff.html")
+
 def loginpublic(request):
     return render(request,"ComplaintMS/loginpublic.html")
+
+def loginstaff(request):
+    return render(request,"ComplaintMS/loginstaff.html")
 
 def login(request):
     return render(request,"ComplaintMS/login.html")
@@ -154,7 +176,7 @@ def register(request):
                 profile.user_id=new_user.id
             profile.save()
             messages.add_message(request,messages.SUCCESS, f' Registered Successfully ')
-            return redirect('/loginpublic/')
+            return redirect('/signinpublic/')
     else:
         form = UserRegisterForm()
         profile_form=UserProfileForm()
@@ -185,6 +207,16 @@ def loginpublic_redirect(request):
         return HttpResponseRedirect('/dashboard/')
     else:
         return HttpResponseRedirect('/counter/')
+    
+
+
+def loginstaff_redirect(request):
+    if request.user.profile.type_user=='user':
+        return HttpResponseRedirect('/counter/')
+
+
+
+
 
 @login_required
 def dashboard(request):

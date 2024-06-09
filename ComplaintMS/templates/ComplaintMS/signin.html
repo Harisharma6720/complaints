@@ -29,31 +29,32 @@
            
         	{% else %}
            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In as Staff Members</legend>
+                <legend class="border-bottom mb-4">Log In as Staff Member</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-success" type="submit">Login</button>
             </div>
-        </br>
-    </br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-      <!--  </form>
+
+
+        </form>
         <div class="border-top pt-3">
             <small>
-                Need An Account? <a class="ml-2" href="{% url 'register' %}">Register Now</a> <div class="text-muted ">
+               
                     <a href="{% url 'password_reset' %}">Forgot Password?</a>
                 </div>
             </small>
-        </div>-->
+        </div>
           	 {% endif %}
     </div>
+
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
 {% endblock content %}

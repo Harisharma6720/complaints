@@ -107,7 +107,12 @@ from crispy_forms.layout import Submit
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = Complaint
-        fields = ('Subject', 'Type_of_complaint', 'Description')
+        fields = ('Subject', 'Type_of_complaint', 'Description','latitude', 'longitude', 'image')
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+            'latitude': forms.HiddenInput(),  # Hidden field for latitude
+            'longitude': forms.HiddenInput(),  # Hidden field for longitude
+        }
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

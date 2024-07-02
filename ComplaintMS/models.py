@@ -109,7 +109,11 @@ class Complaint(models.Model):
     Subject = models.CharField(max_length=200, blank=False, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     Type_of_complaint = models.CharField(choices=TYPE, null=True, max_length=200)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)  # Add latitude field
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)  # Add longitude field
+    image = models.ImageField(upload_to='complaint_images/', null=True, blank=True)  # Add image field
     Description = models.TextField(max_length=4000, blank=False, null=True)
+
     Time = models.DateField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=3)
 

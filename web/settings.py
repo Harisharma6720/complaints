@@ -37,7 +37,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'tatic'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 
@@ -110,7 +110,7 @@ DATABASES = {
 
         'USER': 'postgres',
 
-        'PASSWORD': '11111',
+        'PASSWORD': '12345',
 
         'HOST': '127.0.0.1',
 
@@ -163,7 +163,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'tatic')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/login_redirect/'
 LOGIN_URL = 'signin'

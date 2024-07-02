@@ -34,12 +34,9 @@ def login_view(request):
 def login_view(request):
     return render(request, 'signinstaff')
 
-
-
 def signin_public(request):
     # view logic here
     return render(request, 'signinpublic.html')
-
 
 def signin_staff(request):
     # view logic here
@@ -77,13 +74,6 @@ def complaint_form(request):
 
 
 
-
-
-
-
-
-
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -96,9 +86,15 @@ from datetime import datetime
 def login_redirect(request):
     # Your view function code here
     print("I have come here in the code.")
-    return redirect('dashboard')
+    print("this is the staff user login",request.user.profile.type_user)
+    # return redirect('counter')
+    if request.user.profile.type_user=='staff':
+        print("this is the user type",request.user.profile.type_user)
+        return redirect('counter')
+    else:
+        return redirect('dashboard')
    
-def loginstaff_redirect(request):
+def signinstaff_redirect(request):
     # Your view function code here
     print("I have come here in the code.")
     # return redirect('dashboard')
@@ -204,23 +200,16 @@ def register(request):
 #login based on user.
 def loginpublic_redirect(request):
     if request.user.profile.type_user=='user':
+        print("this is the user type",request.user.profile.type_user)
         return HttpResponseRedirect('/dashboard/')
     else:
         return HttpResponseRedirect('/counter/')
     
 
-
-def loginstaff_redirect(request):
-    if request.user.profile.type_user=='user':
-        return HttpResponseRedirect('/counter/')
-
-
-
-
-
 @login_required
 def dashboard(request):
-        
+
+ if request.user.profile.type_user=='public':
     if request.method == 'POST':
         p_form=ProfileUpdateForm(request.POST,instance=request.user)
         profile_update_form=UserProfileUpdateForm(request.POST,instance=request.user.profile)
@@ -239,6 +228,10 @@ def dashboard(request):
         'profile_update_form':profile_update_form
         }
     return render(request, 'ComplaintMS/dashboard.html',context)
+ 
+
+
+ 
 
 #change password for user.
 
@@ -259,9 +252,6 @@ def change_password(request):
     })
 
 
-
-
-
 #complaints handling and submission section.
 @login_required
 def complaints(request):
@@ -278,8 +268,8 @@ def complaints(request):
         #        mail=request.user.email
         #        print(mail)
         #        send_mail('Hi Complaint has been Received', 'Thank you for letting us know of your concern, Have a Cookie while we explore into this matter.  Dont Reply to this mail', 'testerpython13@gmail.com', [mail],fail_silently=False)
-               instance.save()
                
+               instance.save()               
                messages.add_message(request,messages.SUCCESS, f'Your complaint has been registered!')
                return render(request,'ComplaintMS/comptotal.html',)
     else:
@@ -329,7 +319,7 @@ def allcomplaints(request):
                         for i in mail:
                                 m=i.email
                        
-                      
+                
                         print(m)
                         # send_mail('Hi, Complaint has been Resolved ', 'Thanks for letting us know of your concern, Hope we have solved your issue. Dont Reply to this mail', 'testerpython13@gmail.com', [m],fail_silently=False)
                         obj.save()
@@ -373,7 +363,6 @@ def solved(request):
                 else:
                         return render(request,'ComplaintMS/solved.html')
                  #testing
-
         else:
                 forms=StatusUpdateForm()
         #c=Complaint.objects.all().exclude(Q(status='3') | Q(status='2'))
@@ -464,6 +453,7 @@ def pdf_view(request):
     Subject = Complaint.objects.filter(id=cid).values('Subject')
     Type = Complaint.objects.filter(id=cid).values('Type_of_complaint')
     Issuedate = Complaint.objects.filter(id=cid).values('Time')
+
 
     for val in details:
             detail_string=("{}".format(val['Description']))

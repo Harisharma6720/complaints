@@ -39,7 +39,10 @@ urlpatterns = [
     # Other paths...
 ]
 
-
+urlpatterns = [
+    path('loginstaff/', login_view, name='loginstaff'),
+    # Other paths...
+]
 """from.views import signin_public
 
 urlpatterns = [
@@ -54,7 +57,8 @@ urlpatterns=[
     url(r'^$',views.index,name='index'),
     url(r'^register/$', views.register, name='register'),
     url(r'^signin/$',auth_views.LoginView.as_view(template_name='ComplaintMS/signin.html'), name='signin'),
-     url(r'^signinpublic/$',auth_views.LoginView.as_view(template_name='ComplaintMS/signinpublic.html'), name='signinpublic'),
+    url(r'^signinpublic/$',auth_views.LoginView.as_view(template_name='ComplaintMS/signinpublic.html'), name='signinpublic'),
+    url(r'^signinstaff/$',auth_views.LoginView.as_view(template_name='ComplaintMS/signinstaff.html'), name='signinstaff'),
     url('logout/', auth_views.LogoutView.as_view(template_name='ComplaintMS/logout.html'), name='logout'),
     url(r'^password/$', views.change_password, name='change_password'),
     url(r'^passwords/$', views.change_password_g, name='change_password_g'),
@@ -62,9 +66,9 @@ urlpatterns=[
     url(r'^solved/$', views.solved, name='solved'),
 
 
-
     url(r'^login/$',views.login,name='login'),
-     url(r'^loginpublic/$',views.loginpublic,name='loginpublic'),
+    url(r'^loginpublic/$',views.loginpublic,name='loginpublic'),
+    url(r'^loginstaff/$',views.loginstaff,name='loginstaff'),
     url(r'^list/$',views.list,name='list'),
     url(r'^pdf/$',views.pdf_view,name='view'),
     url(r'^pdf_g/$',views.pdf_viewer,name='view'),
@@ -72,6 +76,7 @@ urlpatterns=[
 
     url(r'^login_redirect/$',views.login_redirect,name='login_redirect'),
     url(r'^loginpublic_redirect/$',views.login_redirect,name='loginpublic_redirect'),
+    url(r'^loginstaff_redirect/$',views.login_redirect,name='loginstaff_redirect'),
     url(r'^slist/$',views.slist,),
 
 
@@ -80,6 +85,7 @@ urlpatterns=[
     #url(r'^login2/$',views.login2,name='login2'),
 
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
+    url(r'^counter/$', views.counter, name='counter'),
     url(r'^complaints/$', views.complaints, name='complaints'),
     url(r'^allcomplaints/$', views.allcomplaints, name='allcomplaints'),
 

@@ -83,6 +83,12 @@ from datetime import datetime
 
 
 class Profile(models.Model):
+    USER_TYPE_CHOICES = (
+        ('public', 'public'),
+        ('staff', 'staff'),
+        ('admin', 'admin')
+
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     type_user = models.CharField(max_length=20, default='public', choices=(('public', 'public'), ('staff', 'staff'), ('admin', 'Admin')))
     phone_regex = RegexValidator(regex=r'^\d{10,10}$', message="Phone number must be entered in the format: Up to 10 digits allowed.")

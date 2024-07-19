@@ -4,8 +4,6 @@
 {% block content %}
 
 <style>
-
-
 td.color_1{ background-color: #4caf50; }
 td.color_2{ background-color: yellow; }
 td.color_3{ background-color: red; }
@@ -17,19 +15,9 @@ table {
     counter-increment: tableCount; 
 }
 .form-required { display: none; }
-.requiredField
-{
-  display:none;
-}
-.alert
-{
-  width:400px;
-}
-th{
-   font-size:16px;
-   font-family:Arial;
-}
-
+.requiredField { display:none; }
+.alert { width:400px; }
+th { font-size:16px; font-family:Arial; }
 </style>
 <head>
   
@@ -41,182 +29,195 @@ th{
   <title>All Complaints</title>
    
   <!-- Bootstrap core CSS -->
-  <link href= "{% static "ComplaintMS/extra/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+  <link href="{% static 'ComplaintMS/extra/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="{% static "ComplaintMS/css/simple-sidebar.css" %}" rel="stylesheet">
+  <link href="{% static 'ComplaintMS/css/simple-sidebar.css' %}" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'ComplaintMS/extra/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'ComplaintMS/extra/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 </head>
 
+<div class="d-flex" id="wrapper">
 
-  <div class="d-flex" id="wrapper">
-
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading"> <i>ComplaintMS</i> </div>
-      <div class="list-group list-group-flush">
-        {% if user.is_authenticated  %}
-			 
-               <a href="" class="list-group-item list-group-item-action active"> Welcome : {{user.first_name}} </a>
-              <a href='/counter/' class="list-group-item list-group-item-action">Statistics</a>
-             
-              <a href='/passwords/' class="list-group-item list-group-item-action">Password Reset</a>
-
-              
-              <a href="/allcomplaints/" class="list-group-item list-group-item-action">All Complaints</a>
-              <a href="/solved/" class="list-group-item list-group-item-action">Solved Complaints</a>
-
-              {% endif %}
-              
-      </div>
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading"> <i>ComplaintMS</i> </div>
+    <div class="list-group list-group-flush">
+      {% if user.is_authenticated %}
+        <a href="" class="list-group-item list-group-item-action active"> Welcome : {{user.username}} </a>
+        <a href='/counter/' class="list-group-item list-group-item-action">Statistics</a>
+        <a href='/passwords/' class="list-group-item list-group-item-action">Password Reset</a>
+        <a href="/allcomplaints/" class="list-group-item list-group-item-action">All Complaints</a>
+        <a href="/solved/" class="list-group-item list-group-item-action">Solved Complaints</a>
+      {% endif %}
     </div>
-    <!-- /#sidebar-wrapper -->
+  </div>
+  <!-- /#sidebar-wrapper -->
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-     
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle">Hide Sidebar</button>
-       &nbsp;&nbsp;&nbsp;&nbsp;
-       <br>
-       <br>
- <form class="form-inline px-2" method="GET" >
-
-    <input class="form-control " type="search" placeholder="Search" aria-label="Search" name="search" >
-    &nbsp;
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-    
-   &nbsp;
-  
-  <label for="sel1"></label>
-  <select class="form-control px-2" id="sel1" name="drop">
-  
-    <option>Fire</option>
-    <option>Road</option>
-    <option>Garbage</option>
-    <option>Transportation</option>
-    <option>Other</option>
-  </select>
-&nbsp;
-    <button class="btn btn-outline-primary my-3 my-sm-1" type="submit">Filter</button>
-  
-    </form>
-      </nav>
-      <br>
-          <ul>
-	{% for message in messages %}
-	   <div {% if message.tags %} class="alert alert-{{ message.tags }} "{% endif %}>
-	   <a class="close ml-2" data-dismiss="alert" href="#">&times;</a>
-      {{ message }}
-    </div>
-	{% endfor %}
-</ul>
-      <div class="container-fluid">
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <button class="btn btn-primary" id="menu-toggle">☰</button>
+      &nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+      <form class="form-inline px-2" method="GET">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
+        &nbsp;
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        &nbsp;
+        <label for="sel1"></label>
+        <select class="form-control px-2" id="sel1" name="drop">
+          <option>Fire</option>
+          <option>Road</option>
+          <option>Garbage</option>
+          <option>Transportation</option>
+          <option>Other</option>
+        </select>
+        &nbsp;
+        <button class="btn btn-outline-primary my-3 my-sm-1" type="submit">Filter</button>
+      </form>
+    </nav>
+    <br>
+    <ul>
+      {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }} "{% endif %}>
+          <a class="close ml-2" data-dismiss="alert" href="#">&times;</a>
+          {{ message }}
+        </div>
+      {% endfor %}
+    </ul>
+    <div class="container-fluid">
       <div class="card-body bg-light">
         <h1 class="mt-4 text-dark"><b>Complaints Table </h1></form>
         <br>
-    
-    <div class="table-responsive">
-	<table id="dtBasicExample" class="table table-striped table-hover table-bordered table-sm" cellspacing="5" width="100%">
-  <thead>
-    <tr class="bg-white">
-	
-      <th class="th-sm text-dark">ID
-
-      </th>
-      <th class="th-sm  text-dark ">User
-
-      </th>
-	  <th class="th-sm  text-dark">Subject
-
-    
-      <th class="th-sm  text-dark">Complaint Type
-
-      </th>
-      <th class="th-sm-12  text-dark">Issued
-
-      </th>
-      <th class="th-sm  text-dark">Description
-
-      </th>
-      <th class="th-sm  text-dark">Status
-
-      </th>
-      
-      <th class="th-sm  text-dark">
-      Actions
-      </th>
-      <th class="th-sm  text-dark">
-
-      </th>
-    </tr>
-  </thead>
- 
-{% for data in c %}
-  <tbody>
-    <tr><!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
-      <td class="counterCell bg-white"> </td>
-
-      <td class="bg-white">{{ data.user }}</td>
-	    <td class="bg-white">{{data.Subject}}</td>
-     <!--<td class="bg-white">{{ data.Branch }}</td>-->
-      <td class="bg-white">{{ data.get_Type_of_complaint_display }}</td>
-      <td class="bg-white">{{ data.Time }}</td>
-      <td class="bg-white">
-    
-      <form method="POST" action='/pdf_g/'>
-      {% csrf_token %}
-      <input type='hidden' name="cid" value={{data.id}}>
-      <input type="hidden" name="uid" value={{ data.user_id}}>
-      <button type='submit' class="btn btn-info" name="pdf">Details</button>
-      </form>
-      </td>
-      
-	 
-      <td class="color_{{ data.status }} "></td>
-      
-      <form method="POST">
-      {% csrf_token %}
-      <td class="bg-white" class="">{{ forms|crispy }}</td>
-      <td class="bg-white">
-      <input type='hidden' name="cid2" value={{data.id}}>
-      <input type="hidden" name="uid" value={{ data.user_id}}>
-      <button type='submit' class="btn btn-success">Submit</button>
-      </form>
-      </td><!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
-     
-	  
-    
-	
-    </tr>
-    
-  </tbody>
-  {% endfor %} 
-  
-
- 
-      </ul>
-  <tfoot>
-
-</table>
-</div>
+        <div class="table-responsive">
+          <table id="dtBasicExample" class="table table-striped table-hover table-bordered table-sm" cellspacing="5" width="100%">
+            <thead>
+              <tr class="bg-white">
+                <th class="th-sm text-dark">ID</th>
+                <th class="th-sm text-dark">User</th>
+                <th class="th-sm text-dark">Subject</th>
+                <th class="th-sm text-dark">Complaint Type</th>
+                <th class="th-sm-12 text-dark">Issued Time</th>
+                <th class="th-sm text-dark">Description</th>
+                <th class="th-sm text-dark">Details</th>
+                <th class="th-sm text-dark">Status</th>
+                <th class="th-sm text-dark">Actions</th>
+                <th class="th-sm text-dark">Click</th>
+           
+              </tr>
+            </thead>
+            {% for data in c %}
+              <tbody>
+                <tr>
+                  <td class="counterCell bg-white"> </td>
+                  <td class="bg-white">{{ data.user }}</td>
+                  <td class="bg-white">{{data.Subject}}</td>
+                  <td class="bg-white">{{ data.get_Type_of_complaint_display }}</td>
+                  <td class="bg-white">{{ data.Time }}</td>
+                  <td class="bg-white">
+                    <form method="POST" action='/pdf_g/'>
+                      {% csrf_token %}
+                      <input type='hidden' name="cid" value={{data.id}}>
+                      <input type="hidden" name="uid" value={{ data.user_id}}>
+                      <button type='submit' class="btn btn-info" name="pdf">PDF</button>
+                    </form>
+                  </td>
+                  <td class="bg-white">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detailsModal" data-user="{{ data.user }}" data-subject="{{ data.Subject }}" data-type="{{ data.get_Type_of_complaint_display }}" data-time="{{ data.Time }}" data-description="{{ data.Description }}" data-status="{{ data.status }}" data-longitude="{{ data.longitude }}" data-latitude="{{ data.latitude }}" data-address="{{ data.address }}" data-image="{{ data.image.url }}">Details</button>
+                  </td>
+                  <td class="color_{{ data.status }} "></td>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <td class="bg-white" class="">{{ forms|crispy }}</td>
+                    <td class="bg-white">
+                      <input type='hidden' name="cid2" value={{data.id}}>
+                      <input type="hidden" name="uid" value={{ data.user_id}}>
+                      <button type='submit' class="btn btn-success">Submit</button>
+                    </td>
+                  </form>
+                </tr>
+              </tbody>
+            {% endfor %}
+          </table>
+        </div>
       </div>
     </div>
-    <!-- /#page-content-wrapper -->
-   </div>
   </div>
-  <!-- /#wrapper -->
+  <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
 
-  <!-- Bootstrap core JavaScript -->
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailsModalLabel">Complaint Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><strong>User:</strong> <span id="modalUser"></span></p>
+        <p><strong>Subject:</strong> <span id="modalSubject"></span></p>
+        <p><strong>Type:</strong> <span id="modalType"></span></p>
+        <p><strong>Issued Time:</strong> <span id="modalTime"></span></p>
+        <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+        <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+        <p><strong>Longitude:</strong> <span id="modalLongitude"></span></p>
+        <p><strong>Latitude:</strong> <span id="modalLatitude"></span></p>
+        <p><strong>Address:</strong> <span id="modalAddress"></span></p>
+        <p><strong>Image:</strong><br><img id="modalImage" src="" alt="Complaint Image" style="width: 100%; max-width: 400px; height: auto;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Menu Toggle Script -->
+<script>
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
 
-  <!-- Menu Toggle Script -->
-  <script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-  </script>
+  $('#detailsModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var user = button.data('user');
+    var subject = button.data('subject');
+    var type = button.data('type');
+    var time = button.data('time');
+    var description = button.data('description');
+    var status = button.data('status');
+    var longitude = button.data('longitude');
+    var latitude = button.data('latitude');
+    var address = button.data('address');
+    var imageUrl = button.data('image');
 
-		
+    var modal = $(this);
+    modal.find('#modalUser').text(user);
+    modal.find('#modalSubject').text(subject);
+    modal.find('#modalType').text(type);
+    modal.find('#modalTime').text(time);
+    modal.find('#modalDescription').text(description);
+    modal.find('#modalStatus').text(status);
+    modal.find('#modalLongitude').text(longitude);
+    modal.find('#modalLatitude').text(latitude);
+    modal.find('#modalAddress').text(address);
+    modal.find('#modalImage').attr('src', imageUrl);
+    
+    if (imageUrl) {
+    modal.find('#modalImage').attr('src', imageUrl).show(); // Set the image URL and show the image
+    } else {
+    modal.find('#modalImage').hide(); // Hide the image if no URL is present
+    }
+  
+  });
+</script>
+
 {% endblock content %}

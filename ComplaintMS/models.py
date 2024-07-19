@@ -117,10 +117,12 @@ class Complaint(models.Model):
     Type_of_complaint = models.CharField(choices=TYPE, null=True, max_length=200)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)  # Add latitude field
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)  # Add longitude field
-    image = models.ImageField(upload_to='complaint_images/', null=True, blank=True)  # Add image field
+    image = models.ImageField(upload_to='images/', null=True, blank=False)  # Add image 
+    address = models.CharField(max_length=500, null=True, blank=False)
     Description = models.TextField(max_length=4000, blank=False, null=True)
 
-    Time = models.DateField(auto_now=True)
+
+    Time = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=3)
 
     def __init__(self, *args, **kwargs):

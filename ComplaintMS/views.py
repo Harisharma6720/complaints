@@ -8,15 +8,16 @@ from django.contrib import messages
 from django.urls import reverse
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
+from django.core.paginator import Paginator
 import reportlab
-
+from .utils import send_status_change_notification
 from django.db.models import Count, Q
 from .models import Profile,Complaint
 
 from django.shortcuts import get_object_or_404,render, redirect
 from django.http import HttpResponse
 ##from .forms import UserRegisterForm,ProfileUpdateForm,UserProfileform,ComplaintForm,UserProfileUpdateform,statusupdate
-
+from .utils import send_complaint_notification
 
 from .forms import UserRegisterForm, ProfileUpdateForm, UserProfileForm, ComplaintForm, UserProfileUpdateForm, StatusUpdateForm
 
@@ -101,9 +102,6 @@ def signinstaff_redirect(request):
     return redirect('counter')
     
    
-
-
-
 #page loading.
 def index(request):
     return render(request,"ComplaintMS/home.html")
@@ -128,8 +126,6 @@ def login(request):
 
 def signin(request):
     return render(request,"ComplaintMS/signin.html")
-
-
 
 #get the count of all the submitted complaints,solved,unsolved.
 def counter(request):
@@ -158,7 +154,6 @@ def change_password_g(request):
         'form': form
     })
     return render(request,"ComplaintMS/change_password_g.html")
-
 #registration page.
 def register(request):
     if request.method == 'POST':
@@ -205,7 +200,6 @@ def loginpublic_redirect(request):
     else:
         return HttpResponseRedirect('/counter/')
     
-
 @login_required
 def dashboard(request):
 
@@ -229,10 +223,6 @@ def dashboard(request):
         }
     return render(request, 'ComplaintMS/dashboard.html',context)
  
-
-
- 
-
 #change password for user.
 
 def change_password(request):
@@ -259,19 +249,23 @@ def complaints(request):
     if request.method == 'POST':
            
         
-        complaint_form=ComplaintForm(request.POST)
+        complaint_form=ComplaintForm(request.POST, request.FILES)
         if complaint_form.is_valid():
-            
-          
+                    
                instance=complaint_form.save(commit=False)
                instance.user=request.user
+               
         #        mail=request.user.email
         #        print(mail)
         #        send_mail('Hi Complaint has been Received', 'Thank you for letting us know of your concern, Have a Cookie while we explore into this matter.  Dont Reply to this mail', 'testerpython13@gmail.com', [mail],fail_silently=False)
                
-               instance.save()               
+               instance.save()
+               send_complaint_notification(instance)               
                messages.add_message(request,messages.SUCCESS, f'Your complaint has been registered!')
                return render(request,'ComplaintMS/comptotal.html',)
+        else:
+                messages.add_message(request, messages.ERROR, 'Please correct the errors below.')
+
     else:
         
         complaint_form=ComplaintForm(request.POST)
@@ -281,11 +275,25 @@ def complaints(request):
 
 @login_required
 def list(request):
-    c=Complaint.objects.filter(user=request.user).exclude(status='1')
-    result=Complaint.objects.filter(user=request.user).exclude(Q(status='3') | Q(status='2'))
-    #c=Complaint.objects.all()
-    args={'c':c,'result':result}
-    return render(request,'ComplaintMS/Complaints.html',args)
+    c = Complaint.objects.filter(user=request.user).exclude(status='1')
+    result = Complaint.objects.filter(user=request.user).exclude(Q(status='3') | Q(status='2'))
+    
+    # Pagination for 'c'
+    paginator_c = Paginator(c, 10)  # Show 10 complaints per page
+    page_number_c = request.GET.get('page_c')
+    page_obj_c = paginator_c.get_page(page_number_c)
+
+    # Pagination for 'result'
+    paginator_result = Paginator(result, 10)  # Show 10 complaints per page
+    page_number_result = request.GET.get('page_result')
+    page_obj_result = paginator_result.get_page(page_number_result)
+    
+    args = {
+        'page_obj_c': page_obj_c,
+        'page_obj_result': page_obj_result,
+    }
+    return render(request, 'ComplaintMS/Complaints.html', args)
+
 @login_required
 def slist(request):
     result=Complaint.objects.filter(user=request.user).exclude(Q(status='3') | Q(status='2'))
@@ -323,6 +331,7 @@ def allcomplaints(request):
                         print(m)
                         # send_mail('Hi, Complaint has been Resolved ', 'Thanks for letting us know of your concern, Hope we have solved your issue. Dont Reply to this mail', 'testerpython13@gmail.com', [m],fail_silently=False)
                         obj.save()
+                        send_status_change_notification(obj)
                         messages.add_message(request,messages.SUCCESS, f'The complaint has been updated!')
                         return HttpResponseRedirect(reverse('allcomplaints'))
                 else:
@@ -358,6 +367,7 @@ def solved(request):
                         
                         obj=forms.save(commit=False)
                         obj.save()
+                        send_status_change_notification(obj)
                         messages.add_message(request,messages.SUCCESS, f'The complaint has been updated!')
                         return HttpResponseRedirect(reverse('solved'))
                 else:
@@ -380,7 +390,6 @@ def pdf_viewer(request):
     
     cid=request.POST.get('cid')
     uid=request.POST.get('uid')
-    #print(cid)
     
     details = Complaint.objects.filter(id=cid).values('Description')
     name = Complaint.objects.filter(id=cid).values('user_id')
@@ -493,6 +502,84 @@ def pdf_view(request):
     p.showPage()
     p.save()
     return response
+'''
+def complaint_details(request):
+    complaint_id = request.GET.get('id')
+    complaint = get_object_or_404(Complaint, id=complaint_id)
+    data = {
+        'user': complaint.user.username,
+        'subject': complaint.Subject,
+        'type': complaint.get_Type_of_complaint }
+    
+
+    
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+from .forms import ComplaintForm
+from .models import Complaint
+
+def send_complaint_registered_email(staff_email, staff_name, user_name, complaint_details):
+
+    subject = 'New Complaint Registered'
+    message = render_to_string('emails/complaint_registered.html', {
+        'staff_name': staff_name,
+        'user_name': user_name,
+        'complaint_details': complaint_details,
+    })
+    send_mail(subject, '', settings.DEFAULT_FROM_EMAIL, [staff_email], html_message=message)
+def register_complaint(request):
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.user = request.user
+            complaint.save()
+            
+            # Send email notification to staff
+            staff_email = 'harisharma00456@gmail.com'  # Replace with actual staff email
+            staff_name = 't'  # Replace with actual staff name
+            user_name = request.user.username
+            complaint_details = complaint.description  # Adjust as needed
+            
+            send_complaint_registered_email(staff_email, staff_name, user_name, complaint_details)
+            
+            return redirect('complaint_success')  # Redirect to a success page
+    else:
+        form = ComplaintForm()
+    
+    return render(request, 'complaints/register_complaint.html', {'form': form})
+
+# views.py
+
+def send_complaint_updated_email(user_email, user_name, complaint_details):
+    subject = 'Complaint Updated'
+    message = render_to_string('emails/complaint_updated.html', {
+        'user_name': user_name,
+        'complaint_details': complaint_details,
+    })
+    send_mail(subject, '', settings.DEFAULT_FROM_EMAIL, [user_email], html_message=message)
+
+def update_complaint(request, complaint_id):
+    complaint = Complaint.objects.get(id=complaint_id)
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST, instance=complaint)
+        if form.is_valid():
+            form.save()
+            
+            # Send email notification to public user
+            user_email = complaint.user.email
+            user_name = complaint.user.username
+            complaint_details = complaint.description  # Adjust as needed
+            
+            send_complaint_updated_email(user_email, user_name, complaint_details)
+            
+            return redirect('complaint_detail', complaint_id=complaint.id)  # Redirect to the complaint detail page
+    else:
+        form = ComplaintForm(instance=complaint)
+    
+    return render(request, 'complaints/update_complaint.html', {'form': form})
+'''
 
 
 def some_view_function(request):

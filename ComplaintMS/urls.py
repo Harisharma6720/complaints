@@ -8,7 +8,7 @@ Function views
     2. Add a URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    2. Add a URL to urlpatternxcxs:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
@@ -18,7 +18,7 @@ from . import views
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 
-
+from django.conf.urls.static import static
 
 # myapp/urls.py
 
@@ -29,9 +29,6 @@ from.views import login_redirect
 urlpatterns = [
     path('login_redirect/$', login_redirect, name='login_redirect'),
 ]
-
-
-
 
 
 urlpatterns = [
@@ -93,6 +90,7 @@ urlpatterns=[
        url('password-reset/',
          auth_views.PasswordResetView.as_view(
              template_name='ComplaintMS/password_reset.html'
+
          ),
          name='password_reset'),
     url(r'^password-reset-done/$',
@@ -111,7 +109,7 @@ urlpatterns=[
          ),
          name='password_reset_complete'),
     
-   ]
+   ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

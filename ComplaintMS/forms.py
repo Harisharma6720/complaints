@@ -107,11 +107,19 @@ from crispy_forms.layout import Submit
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = Complaint
-        fields = ('Subject', 'Type_of_complaint', 'Description','latitude', 'longitude', 'image')
+        fields = ('Subject', 'Type_of_complaint', 'address', 'Description','latitude', 'longitude', 'image')
+        def clean_image(self):
+            image = self.cleaned_data.get('image')
+            if not image:
+                raise forms.ValidationError("This field is required.")
+            return image
         widgets = {
+            
             'description': forms.Textarea(attrs={'rows': 4}),
             'latitude': forms.HiddenInput(),  # Hidden field for latitude
             'longitude': forms.HiddenInput(),  # Hidden field for longitude
+            'address': forms.TextInput(attrs={'placeholder': 'Enter the address'}),
+
         }
 
 class UserProfileForm(forms.ModelForm):
@@ -152,7 +160,7 @@ class ProfileUpdateForm(forms.ModelForm):
         return email
 
 class UserProfileUpdateForm(forms.ModelForm):
-    Branch = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+    Status = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
     class Meta:
         model = Profile

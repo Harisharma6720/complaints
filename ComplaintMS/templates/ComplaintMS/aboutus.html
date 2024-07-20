@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head><!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
+</head>
 {% block content %}
 <style>
 body
@@ -16,10 +16,6 @@ body
 
     background-color: #ffffff !important;
     
-}
-H1,H2,H3{
-    color:rgb(116, 116, 116);
-    padding:10px;
 }
 img{
   width:100%;
@@ -29,41 +25,65 @@ img{
 {
   border:#007bff !important;
 }
-a {
-  color:black;
-  font-weight:bold;
-
- 
-     color: #000;
-     padding: 1px;
-}
-#middle{
-  left: 0;
-
-    margin-top: -100px;
-    position: absolute;
-  
-    top: 50%;
-    width: 100%;
-}
 </style>
-<br>
           {% load static %}
-          <!-- <div id="middle"> -->
- <center> 
- 
+  
 
-
-
-
-
-			<H2>Developed By: Dynamic Duo</H2>   
-
-
+<div class="card bg-warning text-white">
     
-               
+                <div class="ml-3">
+                <p style="color:white; font-size:40px;"> <b>Nagar Gunaso</b></p>
+        <p style="color:white; text-align:justify;">
+
+            Nagar Gunaso is the Complaint Management System mechanism to receive and act on complaints management reported by public to a municipality or public citizens accessing a government (G2C) service.
+             Also connecting residenta and action-takers directly through ICT media such as email.
+           
+                </p>
+                
+  </div>
+<br>
+<!-- LOG ON TO codeastro.com FOR MORE PROJECTS -->
+</div>
+
+ {% load static %}
+ 
+<center>
+  <br>
+  <br>
+  <br>
+<div class="row  d-flex justify-content-center">
+<div class="col-sm-3 col-sm-pull-4">
+<div class="card text-dark" style="width: 18rem;">
+  <img src="{% static 'ComplaintMS/img/form.png' %}" class="img-rounded" alt="Cinque Terre">
+  <div class="card-body">
+    <p class="card-text">Submit Complaints</p>
+  </div>
+</div>
+</div>
+
+<div class="col-sm-3 col-sm-pull-4">
+<div class="card text-dark" style="width: 18rem;">
+  <img src="{% static 'ComplaintMS/img/solved.png' %}" class="img-rounded" alt="Cinque Terre">
+  <div class="card-body">
+    <p class="card-text">Solve Complaints</p>
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="card text-dark" style="width: 18rem;">
+   <img src="{% static 'ComplaintMS/img/bars.png' %}" class="img-rounded" alt="Cinque Terre">
+  <div class="card-body">
+    <p class="card-text">Get the Stats of the Complaints</p>
+  </div>
+</div>
+</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 </center>
-</div>
 
   {% endblock %}

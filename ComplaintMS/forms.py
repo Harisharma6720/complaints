@@ -103,6 +103,7 @@ from django.core.exceptions import ValidationError
 from .models import Profile, Complaint
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+import re
 
 class ComplaintForm(forms.ModelForm):
     class Meta:
@@ -138,6 +139,17 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'address' )
 
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if not re.match("^[a-zA-Z]+$", first_name):
+            raise forms.ValidationError('First name should contain only alphabetic characters.')
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if not re.match("^[a-zA-Z]+$", last_name):
+            raise forms.ValidationError('Last name should contain only alphabetic characters.')
+        return last_name
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -160,7 +172,7 @@ class ProfileUpdateForm(forms.ModelForm):
         return email
 
 class UserProfileUpdateForm(forms.ModelForm):
-    Status = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+    #Statusss = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
     class Meta:
         model = Profile

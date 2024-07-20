@@ -1,60 +1,70 @@
 {% extends "ComplaintMS/index.html" %}
-
-
-		body {
-  padding-top: 40px;
-  padding-bottom: 40px;
- 
-}
-
-
-	
 {% load crispy_forms_tags %}
+
 {% block content %}
+
+<style>
+  body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .content-section {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+  }
+
+  .btn-success {
+    width: 100%;
+  }
+</style>
+
 <br>
 <div class="container">
   {% load static %}
-      {% for message in messages %}
-	   <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
-	   <a class="close" data-dismiss="alert" href="#">&times;</a>
-      {{ message }}
+  {% for message in messages %}
+  <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+    <a class="close" data-dismiss="alert" href="#">&times;</a>
+    {{ message }}
+  </div>
+  {% endfor %}
+  <div class="content-section">
+    <form method="POST">
+      {% csrf_token %}
+      {% if user.is_authenticated %}
+      <h3> You are already logged in. First logout to switch accounts?</h3>
+      {% else %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Log In as Staff Member</legend>
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-success" type="submit">Login</button>
+      </div>
+      {% endif %}
+    </form>
+    <div class="border-top pt-3">
+      <small>
+        <a href="{% url 'password_reset' %}">Forgot Password?</a>
+      </small>
     </div>
-	{% endfor %}
-      <!-- <div class="container"> -->
-        <div class="content-section">
-        <form method="POST" >
-            {% csrf_token %}
-{% if user.is_authenticated %}
-           <h3> You are already logged In. First logout,To switch account?</h3>
-           
-        	{% else %}
-           <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In as Staff Member</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-success" type="submit">Login</button>
-            </div>
+  </div>
+</div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-        </form>
-        <div class="border-top pt-3">
-            <small>
-               
-                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
-                </div>
-            </small>
-        </div>
-          	 {% endif %}
-    </div>
-
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
 {% endblock content %}

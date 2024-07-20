@@ -81,8 +81,41 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail
 from datetime import datetime
 
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_text
+from django.contrib.auth.tokens import default_token_generator
 
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from django.template.loader import render_to_string
 
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Your account has been activated successfully.')
+        return redirect('login')
+    else:
+        messages.error(request, 'Activation link is invalid.')
+        return redirect('home')
+    
+def send_activation_email(request, user):
+    current_site = get_current_site(request)
+    mail_subject = 'Activate your account.'
+    message = render_to_string('account_activation_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': default_token_generator.make_token(user),
+    })
+    send_mail(mail_subject, message, 'from@example.com', [user.email])
 
 def login_redirect(request):
     # Your view function code here
@@ -218,6 +251,7 @@ def dashboard(request):
         p_form=ProfileUpdateForm(instance=request.user)
         profile_update_form=UserProfileUpdateForm(instance=request.user.profile)
     context={
+        'complaints': complaints,
         'p_form':p_form,
         'profile_update_form':profile_update_form
         }
@@ -325,9 +359,7 @@ def allcomplaints(request):
                         obj=forms.save(commit=False)
                         mail = User.objects.filter(id=uid)
                         for i in mail:
-                                m=i.email
-                       
-                
+                                m=i.email              
                         print(m)
                         # send_mail('Hi, Complaint has been Resolved ', 'Thanks for letting us know of your concern, Hope we have solved your issue. Dont Reply to this mail', 'testerpython13@gmail.com', [m],fail_silently=False)
                         obj.save()
@@ -415,9 +447,9 @@ def pdf_viewer(request):
             ptime=("{}".format(val['Time']))
             detailtime=("Time of Issue/ Time of Solved: {}".format(val['Time']))
     #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
-    date_format = "%Y-%m-%d"
-    a = datetime.strptime(str(datetime.now().date()), date_format)
-    b = datetime.strptime(str(ptime), date_format)
+    date_format = "%Y-%m-%d %H:%M:%S.%f%z"
+    a = datetime.now().date()
+    b = datetime.strptime(ptime, date_format).date()
     delta = a - b
     print(b)
     print(a)

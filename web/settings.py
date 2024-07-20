@@ -72,7 +72,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
 
 ]
 
@@ -99,6 +98,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'web.wsgi.application'
 
 
+
+
+
+
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -118,7 +121,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # settings.py
 
@@ -176,7 +178,7 @@ EMAIL_PORT=587
 EMAIL_HOST_USER = 'nagargunaso888@gmail.com'
 EMAIL_HOST_PASSWORD ='vecrchobmrtujvnt'  #email password
 DEFAULT_FROM_EMAIL =  EMAIL_HOST_USER # add email address here
-EMAIL_USE_TLS = True 
+EMAIL_USE_TLS = True   
 
 #EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

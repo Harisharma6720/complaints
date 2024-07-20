@@ -46,10 +46,23 @@ urlpatterns = [
     path('login/public/signinpublic/', signin_public, name='signinpublic'),
 ]   """
 
+urlpatterns = [
+    path('password-reset/', 
+         auth_views.PasswordResetView.as_view(template_name='password_reset.html'), 
+         name='password_reset'),
+    path('password-reset/done/', 
+         auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), 
+         name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/', 
+         auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), 
+         name='password_reset_confirm'),
+    path('password-reset-complete/', 
+         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), 
+         name='password_reset_complete'),
+    # Other URL patterns...
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
 
-
-
-
+]
 urlpatterns=[
     url(r'^$',views.index,name='index'),
     url(r'^register/$', views.register, name='register'),
@@ -70,6 +83,7 @@ urlpatterns=[
     url(r'^pdf/$',views.pdf_view,name='view'),
     url(r'^pdf_g/$',views.pdf_viewer,name='view'),
     url(r'^aboutus/$',views.aboutus,name='aboutus'),
+
 
     url(r'^login_redirect/$',views.login_redirect,name='login_redirect'),
     url(r'^loginpublic_redirect/$',views.login_redirect,name='loginpublic_redirect'),

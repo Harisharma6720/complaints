@@ -7,19 +7,15 @@ def send_complaint_notification(complaint):
     subject = f'New Complaint Submitted: {complaint.Subject}'
     message = f"""
     A new complaint has been submitted by {complaint.user.username}.
-    
-    Details:
+    Details Of complaint:
     Subject: {complaint.Subject}
     Type: {complaint.Type_of_complaint}
     Description: {complaint.Description}
     Address: {complaint.address}
-    Time: {complaint.Time}
-    
+    Time: {complaint.Time}    
     Please take necessary actions.
-    """
-    
+    """   
     recipient_list = ['harisharma00456@gmail.com']  # Replace with the actual staff email
-
     send_mail(
         subject,
         message,
@@ -35,7 +31,7 @@ def send_status_change_notification(complaint):
     
     The status of your complaint has been updated.
     
-    Details:
+    Details About Complaint:
     Subject: {complaint.Subject}
     Type: {complaint.Type_of_complaint}
     Description: {complaint.Description}

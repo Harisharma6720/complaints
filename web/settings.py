@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth', # new
     'allauth.account', # new
-    'allauth.socialaccount',
+    #'allauth.socialaccount',
     'reportlab',
     'phonenumber_field', 
     'django_extensions',  
@@ -94,11 +94,8 @@ TEMPLATES = [
         },
     },
 ]
-
+DEBUG = True
 WSGI_APPLICATION = 'web.wsgi.application'
-
-
-
 
 
 

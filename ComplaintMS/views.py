@@ -22,8 +22,6 @@ from .utils import send_complaint_notification
 from .forms import UserRegisterForm, ProfileUpdateForm, UserProfileForm, ComplaintForm, UserProfileUpdateForm, StatusUpdateForm
 
 
-
-
 """"from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ComplaintForm

@@ -171,6 +171,8 @@ th { font-size:16px; font-family:Arial; }
         <p><strong>Latitude:</strong> <span id="modalLatitude"></span></p>
         <p><strong>Address:</strong> <span id="modalAddress"></span></p>
         <p><strong>Image:</strong><br><img id="modalImage" src="" alt="Complaint Image" style="width: 100%; max-width: 400px; height: auto;"></p>
+        <p><strong></strong> <a id="modalLink" href="https://www.latlong.net/Show-Latitude-Longitude.html" target="_blank">Find Location</a></p> <!-- New link element -->
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -216,7 +218,7 @@ th { font-size:16px; font-family:Arial; }
     } else {
     modal.find('#modalImage').hide(); // Hide the image if no URL is present
     }
-  
+
   });
 </script>
 

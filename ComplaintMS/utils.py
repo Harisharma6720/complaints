@@ -38,7 +38,6 @@ def send_status_change_notification(complaint):
     Address: {complaint.address}
     Time: {complaint.Time}
     Status: {complaint.get_status_display()}
-    
     Thank you for your patience.
     """
 

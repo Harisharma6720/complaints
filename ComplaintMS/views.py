@@ -88,6 +88,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.template.loader import render_to_string
 
+
+
+
+
+
+
+
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -159,6 +166,8 @@ def signin(request):
     return render(request,"ComplaintMS/signin.html")
 
 #get the count of all the submitted complaints,solved,unsolved.
+
+@login_required
 def counter(request):
         total=Complaint.objects.all().count()
         unsolved=Complaint.objects.all().exclude(status='1').count()
